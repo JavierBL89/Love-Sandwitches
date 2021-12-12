@@ -60,5 +60,20 @@ def valid_data_sales(values):
     return True
 
 
+def update_sales_worksheet(data):
+    """
+    Add new sales data into the sales worksheet
+    """
+    # WE USE THIS PRINT SATATEMENT TO GIVE SOME FEEDBACK TO THE USER
+    # AND ALSO IN THE APP CRASHED WILL TRACK DOWN WHERE EXACTLY IT DID
+    print("Updating sales worksheet...")
+    sales_worksheet = SHEET.worksheet("sales")
+    sales_worksheet.append_row(data)
+    print("Sales worksheet updated")
+
+
 data = get_data_sales_user()
 print(data)
+sales_data = [int(num) for num in data]
+
+update_sales_worksheet(sales_data)
