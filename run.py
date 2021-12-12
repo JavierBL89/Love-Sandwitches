@@ -60,28 +60,28 @@ def valid_data_sales(values):
     return True
 
 
-def update_sales_worksheet(data):
-    """
-    Add new sales data into the sales worksheet
-    """
-    # WE USE THIS PRINT SATATEMENT TO GIVE SOME FEEDBACK TO THE USER
-    # AND ALSO IN THE APP CRASHED WILL TRACK DOWN WHERE EXACTLY IT DID
-    print("Updating sales worksheet...")
-    #HERE WE ACCESS TO THE GOOGLE WORKSHEET APP
-    #AND WE USED THE  WORKSHEET METHODS
-    sales_worksheet = SHEET.worksheet("sales")
-    sales_worksheet.append_row(data)
-    print("Sales worksheet updated")
-
-
-def update_surplus_worksheet(surplus):
-    """
-    Update surplus worksheet with the last surplus market
-    """
-    print("Updating surpus worksheet...")
-    surplus_worksheet = SHEET.worksheet("surplus")
-    surplus_worksheet.append_row(surplus)
-    print("Surplus worksheet updated")
+# def update_sales_worksheet(data):
+#     """
+#     Add new sales data into the sales worksheet
+#     """
+#     # WE USE THIS PRINT SATATEMENT TO GIVE SOME FEEDBACK TO THE USER
+#     # AND ALSO IN THE APP CRASHED WILL TRACK DOWN WHERE EXACTLY IT DID
+#     print("Updating sales worksheet...")
+#     #HERE WE ACCESS TO THE GOOGLE WORKSHEET APP
+#     #AND WE USED THE  WORKSHEET METHODS
+#     sales_worksheet = SHEET.worksheet("sales")
+#     sales_worksheet.append_row(data)
+#     print("Sales worksheet updated")
+#
+#
+# def update_surplus_worksheet(surplus):
+#     """
+#     Update surplus worksheet with the last surplus market
+#     """
+#     print("Updating surpus worksheet...")
+#     surplus_worksheet = SHEET.worksheet("surplus")
+#     surplus_worksheet.append_row(surplus)
+#     print("Surplus worksheet updated")
 
 
 print("Welcome to Love Sandwitches Automation")
@@ -103,12 +103,23 @@ def calculate_sales_surplus(sales):
     return surplus_list
 
 
+def update_worksheet(data, worksheet):
+    """
+    Receives a list of integers to be inserted into the WORKSHEET
+    Update the relevant worksheet
+    """
+    print(f"Updating {worksheet} ...\n")
+    data_worksheet = SHEET.worksheet(worksheet)
+    data_worksheet.append_row(data)
+    print(f"{worksheet} updated successfully")
+
+
 def main():
     data = get_data_sales_user()
     sales_data = [int(num) for num in data]
-    update_sales_worksheet(sales_data)
+    update_worksheet(sales_data, "sales")
     surplus_data = calculate_sales_surplus(sales_data)
-    update_surplus_worksheet(surplus_data)
+    update_worksheet(surplus_data, "surplus")
 
 
 main()
