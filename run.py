@@ -114,6 +114,26 @@ def update_worksheet(data, worksheet):
     print(f"{worksheet} updated successfully")
 
 
+def get_last_5_entries_sales():
+    """
+    Collects columns of data from sales worksheet, collecting
+    the last 5 entries for each sandwitch and returns data
+    as a list of lists
+    """
+    sales = SHEET.worksheet("sales")
+    # sales.col_values(1)
+    # pprint(sales.col_values(1))
+    columns = []
+    for ind in range(1, 7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    # for list in columns:
+    #     pprint(list[-5:])
+    return columns
+
+get_last_5_entries_sales()
+
+
 def main():
     data = get_data_sales_user()
     sales_data = [int(num) for num in data]
@@ -122,4 +142,4 @@ def main():
     update_worksheet(surplus_data, "surplus")
 
 
-main()
+# main()
