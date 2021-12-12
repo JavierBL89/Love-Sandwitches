@@ -2,7 +2,7 @@
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 import gspread
 from google.oauth2.service_account import Credentials
-
+from pprint import pprint
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -67,13 +67,48 @@ def update_sales_worksheet(data):
     # WE USE THIS PRINT SATATEMENT TO GIVE SOME FEEDBACK TO THE USER
     # AND ALSO IN THE APP CRASHED WILL TRACK DOWN WHERE EXACTLY IT DID
     print("Updating sales worksheet...")
+    #HERE WE ACCESS TO THE GOOGLE WORKSHEET APP
+    #AND WE USED THE  WORKSHEET METHODS
     sales_worksheet = SHEET.worksheet("sales")
     sales_worksheet.append_row(data)
     print("Sales worksheet updated")
 
 
-data = get_data_sales_user()
-print(data)
-sales_data = [int(num) for num in data]
+def update_surplus_worksheet(surplus):
+    """
+    Update surplus worksheet with the last surplus market
+    """
+    print("Updating surpus worksheet...")
+    surplus_worksheet = SHEET.worksheet("surplus")
+    surplus_worksheet.append_row(surplus)
+    print("Surplus worksheet updated")
 
-update_sales_worksheet(sales_data)
+
+print("Welcome to Love Sandwitches Automation")
+
+
+def calculate_sales_surplus(sales):
+    """
+    ACCSESS THE STOCK WORKSHEET TO CALCULATE SURPLUS
+    """
+    stock = SHEET.worksheet("stock").get_all_values()
+    # pprint([int(value) for value in stock[-1]])
+    stock_row = [int(value) for value in stock[-1]]
+    # result = zip(stock_row, sales)
+    # return list(result)
+    surplus_list = []
+    for stock, sales in zip(stock_row, sales):
+        surplus = stock - sales
+        surplus_list.append(surplus)
+    return surplus_list
+
+
+def main():
+    data = get_data_sales_user()
+    sales_data = [int(num) for num in data]
+    update_sales_worksheet(sales_data)
+    surplus_data = calculate_sales_surplus(sales_data)
+    update_surplus_worksheet(surplus_data)
+
+
+main()
