@@ -111,7 +111,7 @@ def update_worksheet(data, worksheet):
     print(f"Updating {worksheet} ...\n")
     data_worksheet = SHEET.worksheet(worksheet)
     data_worksheet.append_row(data)
-    print(f"{worksheet} updated successfully")
+    print(f"{worksheet} updated successfully\n")
 
 
 def get_last_5_entries_sales():
@@ -148,6 +148,18 @@ def calculate_stock_data(data):
     return new_stock_data
 
 
+def next_stock_market(stock_data):
+    data_worksheet = SHEET.worksheet("stock")
+    title_stock = data_worksheet.row_values(1)
+
+    new_stock = {}
+    for key in title_stock:
+        for value in stock_data:
+            new_stock[key] = value
+    print("Here the next stock market recomendation")
+    return new_stock
+
+
 def main():
     data = get_data_sales_user()
     sales_data = [int(num) for num in data]
@@ -156,7 +168,10 @@ def main():
     update_worksheet(surplus_data, "surplus")
     sales_columns = get_last_5_entries_sales()
     stock_data = calculate_stock_data(sales_columns)
-    print(stock_data)
+    update_worksheet(stock_data, "stock")
+    final_stock = next_stock_market(stock_data)
+    return final_stock
 
 
-main()
+final_stock = main()
+print(final_stock)
