@@ -121,8 +121,7 @@ def get_last_5_entries_sales():
     as a list of lists
     """
     sales = SHEET.worksheet("sales")
-    # sales.col_values(1)
-    # pprint(sales.col_values(1))
+
     columns = []
     for ind in range(1, 7):
         column = sales.col_values(ind)
@@ -131,7 +130,22 @@ def get_last_5_entries_sales():
     #     pprint(list[-5:])
     return columns
 
-get_last_5_entries_sales()
+
+def calculate_stock_data(data):
+    """
+    Receive data from the last 5 sales market
+    Calculate a recomended amount of sandwithches
+    for the next market
+    """
+    print("Calculating next market stock...\n")
+    new_stock_data = []
+
+    for column in data:
+        int_column = [int(num)for num in column]
+        average = sum(int_column) / len(int_column)
+        stock_column = average * 1.1
+        new_stock_data.append(round(stock_column))
+    return new_stock_data
 
 
 def main():
@@ -140,6 +154,9 @@ def main():
     update_worksheet(sales_data, "sales")
     surplus_data = calculate_sales_surplus(sales_data)
     update_worksheet(surplus_data, "surplus")
+    sales_columns = get_last_5_entries_sales()
+    stock_data = calculate_stock_data(sales_columns)
+    print(stock_data)
 
 
-# main()
+main()
